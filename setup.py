@@ -34,8 +34,8 @@ setup(name='voteit.notes',
       tests_require=requires,
       test_suite="voteit.notes",
       entry_points = {
-          'fanstatic.libraries': {
-              'voteit_notes_lib': 'voteit.notes.fanstaticlib:voteit_notes_lib'
-          }
+          'fanstatic.libraries': [
+              'voteit_notes_lib = voteit.notes.fanstaticlib:voteit_notes_lib'
+          ],
       },
   )
