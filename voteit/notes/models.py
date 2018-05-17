@@ -71,48 +71,13 @@ class MeetingNotes(object):
     def __len__(self):
         return len(self.data)
 
+    def __repr__(self): #pragma: no coverage
+        klass = self.__class__
+        classname = '%s.%s' % (klass.__module__, klass.__name__)
+        return '<%s adapter at %#x>' % (classname, id(self))
 
-    # def __iter__(self):
-    #     return iter(self.data)
-    #
-    # def __contains__(self, key):
-    #     return key in self.data
-    #
-    # def get(self, key, failobj=None):
-    #     if key not in self:
-    #         return failobj
-    #     return self[key]
-    #
-    # def setdefault(self, key, failobj=None):
-    #     if key not in self:
-    #         self[key] = failobj
-    #     return self[key]
-    #
-    # def __repr__(self):
-    #     return repr(self.data)
-    #
-    # def __cmp__(self, dict):
-    #     return cmp(self.data, dict)
-    #
-    # __hash__ = None # Avoid Py3k warning
-    #
-    # def __len__(self):
-    #     return len(self.data)
-    #
-    # def __getitem__(self, key):
-    #     if key in self.data:
-    #         return self.data[key]
-    #     raise KeyError(key)
-    #
-    # def __setitem__(self, key, item):
-    #     if not isinstance(self.data, OOBTree):
-    #         self.data = self.context._user_notes_data = OOBTree()
-    #     self.data[key] = item
-    #
-    # def __delitem__(self, key):
-    #     del self.data[key]
-
-
+    def __cmp__(self, dict):
+        return cmp(self.data, dict)
 
 
 def includeme(config):
