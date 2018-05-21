@@ -8,6 +8,7 @@ CONTRIBUTORS = open(os.path.join(here, 'CONTRIBUTORS.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = ('voteit.core',
+            'betahaus.viewcomponent',
             'pyramid',
             'colander',
             'deform',

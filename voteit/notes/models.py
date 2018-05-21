@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOBTree
+from arche.utils import AttributeAnnotations
 from pyramid.decorator import reify
-from arche.compat import IterableUserDict
 from pyramid.interfaces import IRequest
 from voteit.core.models.interfaces import IMeeting
 from zope.component import adapter
 from zope.interface import implementer
 
 from voteit.notes.interfaces import IMeetingNotes
+from voteit.notes.interfaces import IMeetingNotesSettings
 
 
 @implementer(IMeetingNotes)
@@ -17,7 +18,7 @@ class MeetingNotes(object):
         Has a dict-like interface where UID is expected to be the key.
     """
     userid = None
-    data_attr = '_user_notes_data'
+    data_attr = '_meeting_notes_data'
 
     def __init__(self, context, request):
         self.context = context
@@ -33,10 +34,11 @@ class MeetingNotes(object):
         if self.userid is None:
             raise ValueError("Can't create storage when userid is None")
         if not hasattr(self.context, self.data_attr):
-            self.context._user_notes_data = OOBTree()
-        if self.userid not in self.context._user_notes_data:
-            self.context._user_notes_data[self.userid] = OOBTree()
-        self.data = self.context._user_notes_data[self.userid]
+            setattr(self.context, self.data_attr, OOBTree())
+        global_data = getattr(self.context, self.data_attr)
+        if self.userid not in global_data:
+            global_data[self.userid] = OOBTree()
+        self.data = global_data[self.userid]
 
     def __contains__(self, uid):
         return uid in self.data
@@ -50,9 +52,12 @@ class MeetingNotes(object):
         return self.data.get(uid, default)
 
     def __setitem__(self, uid, item):
-        if not isinstance(self.data, OOBTree):
-            self._create_storage()
-        self.data[uid] = item
+        if item:
+            if not isinstance(self.data, OOBTree):
+                self._create_storage()
+            self.data[uid] = item
+        else:
+            self.data.pop(uid, None)
 
     def __delitem__(self, uid):
         del self.data[uid]
@@ -80,5 +85,12 @@ class MeetingNotes(object):
         return cmp(self.data, dict)
 
 
+@implementer(IMeetingNotesSettings)
+@adapter(IMeeting)
+class MeetingNotesSettings(AttributeAnnotations):
+    attr_name = '_meeting_notes_settings'
+
+
 def includeme(config):
-    config.registry.registerAdapter(MeetingNotes, )
+    config.registry.registerAdapter(MeetingNotes)
+    config.registry.registerAdapter(MeetingNotesSettings)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pyramid.interfaces import IDict
 from zope.interface import Attribute
 from zope.interface import Interface
 
@@ -39,3 +40,8 @@ class IMeetingNotes(Interface):
 
     def __len__():
         pass
+
+
+class IMeetingNotesSettings(IDict):
+    """ Per-meeting settings. """
+
