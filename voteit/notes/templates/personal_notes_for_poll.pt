@@ -1,0 +1,31 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:condition="results"
+      i18n:domain="voteit.notes">
+<div class="modal-body text-right">
+    <a class="btn btn-default btn-sm" role="button"
+       data-toggle="collapse" href="#personal-notes"
+       aria-expanded="false" aria-controls="personal-notes">
+        <span class="glyphicon glyphicon-pushpin"></span>
+        <span i18n:translate="">Your notes <span i18n:name="count">(${len(results)})</span></span>
+        <span class="glyphicon glyphicon-chevron-down"></span>
+    </a>
+</div>
+<div class="collapse" id="personal-notes">
+    <div class="list-group">
+        <div class="list-group-item" tal:repeat="item results">
+            <tal:defs define="txt view.get_txt(item);
+                              propose_html view.get_ptag(item);">
+                <span tal:replace="structure propose_html"></span>
+                <span>
+                    #${item['prop'].aid|'Unknown proposal'}
+                </span>
+                <div tal:content="structure txt"></div>
+            </tal:defs>
+        </div>
+    </div>
+</div>
+
+</tal:main>

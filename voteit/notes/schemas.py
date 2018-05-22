@@ -6,8 +6,8 @@ from voteit.notes import _
 
 STATES_VALUES = (
     ('', _("- select -")),
-    ('approved', _("Approved")),
-    ('rejected', _("Rejected")),
+    ('approve', _("Approve")),
+    ('deny', _("Deny")),
     ('other', _("Other")),
 )
 

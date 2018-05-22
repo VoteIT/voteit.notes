@@ -13,7 +13,7 @@ notes_scripts = Resource(voteit_notes_lib, 'scripts.js', depends=(base_js,))
 
 
 def include_resources(view, event):
-    if view.request.meeting:
+    if view.request.personal_notes_enabled:
         notes_scripts.need()
 
 
