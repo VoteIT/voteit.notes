@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"X-Generator: Poedit 1.8.6\n"
+
+#: voteit/notes/schemas.py:8
+msgid "Undecided"
+msgstr "Obestämd"
+
+#: voteit/notes/schemas.py:9
+msgid "Approve"
+msgstr "Bifall"
+
+#: voteit/notes/schemas.py:10
+msgid "Deny"
+msgstr "Avslag"
+
+#: voteit/notes/schemas.py:32
+msgid "Your stance"
+msgstr "Din inställning"
+
+#: voteit/notes/schemas.py:44
+msgid "Notes"
+msgstr "Anteckningar"
+
+#: voteit/notes/schemas.py:55
+msgid "Activate this plugin?"
+msgstr "Aktivera denna plugin?"
+
+#: voteit/notes/templates/personal_notes_for_poll.pt:12
+msgid "Your notes ${count}"
+msgstr "Dina anteckningar ${count}"
+
+#: voteit/notes/views/proposal.py:30
+msgid "Your private notes"
+msgstr "Dina privata anteckningar"
+
+#: voteit/notes/views/settings.py:47
+msgid "Personal notes"
+msgstr "Personliga anteckningar"
+
+#. Default: Allows users to annotate proposals with personal notes and a
+#. preference on how they wish to vote later on.
+#: voteit/notes/views/settings.py:48
+msgid "control_panel_personal_notes_description"
+msgstr "Tillåter användare att annotera förslag med personliga anteckningar och preferenser om hur de tänker rösta senare."
+
+#: voteit/notes/views/settings.py:58
+msgid "Settings"
+msgstr "Inställningar"
