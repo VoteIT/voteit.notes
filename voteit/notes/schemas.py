@@ -5,11 +5,22 @@ from voteit.notes import _
 
 
 STATES_VALUES = (
-    ('', _("- select -")),
+    ('', _("Undecided")),
     ('approve', _("Approve")),
     ('deny', _("Deny")),
-    ('other', _("Other")),
 )
+
+STATE_ICONS_CLS = {
+    'approve': 'glyphicon glyphicon-approved',
+    'deny': 'glyphicon glyphicon-denied',
+    '': 'glyphicon glyphicon-question-sign',
+}
+
+STATE_TXT_CLS = {
+    'approve': 'text-success',
+    'deny': 'text-danger',
+    '': 'text-warning',
+}
 
 
 class NotesSchema(colander.Schema):
@@ -20,7 +31,13 @@ class NotesSchema(colander.Schema):
         colander.String(),
         title = _("Your stance"),
         missing=colander.drop,
-        widget = deform.widget.SelectWidget(values=STATES_VALUES),
+        default="",
+        widget = deform.widget.RadioChoiceWidget(
+            values=STATES_VALUES,
+            icon_cls=STATE_ICONS_CLS,
+            txt_cls=STATE_TXT_CLS,
+            template='btn_radios',
+        ),
     )
     notes = colander.SchemaNode(
         colander.String(),

@@ -6,13 +6,8 @@ from voteit.core.models.interfaces import IPoll
 from voteit.core.security import ADD_VOTE
 
 from voteit.notes.interfaces import IMeetingNotes
-
-
-STATE_ICONS = {
-    'approve': 'glyphicon glyphicon-approved text-success',
-    'deny': 'glyphicon glyphicon-denied text-danger',
-    'other': 'glyphicon glyphicon-question-sign text-warning',
-}
+from voteit.notes.schemas import STATE_ICONS_CLS
+from voteit.notes.schemas import STATE_TXT_CLS
 
 
 @view_config(context=IPoll,
@@ -39,7 +34,9 @@ class NotesForPollView(BaseView):
     def get_ptag(self, item, default=''):
         propose = item['note'].get('propose', default)
         if propose:
-            return """<span class="%s"></span>&nbsp;""" % STATE_ICONS.get(propose, STATE_ICONS['other'])
+            return """<span class="%s %s"></span>&nbsp;""" % \
+                   (STATE_ICONS_CLS.get(propose, STATE_ICONS_CLS['']),
+                    STATE_TXT_CLS.get(propose, STATE_TXT_CLS['']),)
         return default
 
     def get_txt(self, item, default=''):

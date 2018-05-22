@@ -1,0 +1,33 @@
+<tal:main
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="voteit.notes">
+  <div class="text-right">
+    ${field.start_rename()}
+    <div tal:define="oid oid|field.oid;
+                     css_class css_class|field.widget.css_class;
+                     style style|field.widget.style;
+                     inline getattr(field.widget, 'inline', False);
+                     icon_cls field.widget.icon_cls;
+                     txt_cls field.widget.txt_cls;"
+         class="btn-group btn-group-sm" data-toggle="buttons">
+      <tal:iter tal:repeat="choice values | field.widget.values">
+        <label for="${oid}-${repeat.choice.index}"
+               tal:define="(value, title) choice"
+               class="btn btn-default ${value == cstruct and 'active'} ${bool(value) == bool(cstruct) == False and 'active'}">
+          <input tal:attributes="checked value == cstruct;
+                                 class css_class;
+                                 style style;"
+                 type="radio"
+                 name="${oid}"
+                 value="${value}"
+                 id="${oid}-${repeat.choice.index}"/>
+          <span class="${txt_cls.get(value, '')}">
+            <span class="${icon_cls.get(value, '')}"></span>
+            ${title}
+          </span>
+        </label>
+      </tal:iter>
+    </div>
+    ${field.end_rename()}
+  </div>
+</tal:main>
