@@ -91,6 +91,17 @@ class MeetingNotesSettings(AttributeAnnotations):
     attr_name = '_meeting_notes_settings'
 
 
+def personal_notes_enabled(request):
+    return IMeetingNotesSettings(request.meeting, {}).get('active', False)
+
+
+def personal_meeting_notes(request):
+    if request.meeting is not None:
+        return request.registry.getMultiAdapter((request.meeting, request), IMeetingNotes)
+
+
 def includeme(config):
     config.registry.registerAdapter(MeetingNotes)
     config.registry.registerAdapter(MeetingNotesSettings)
+    config.add_request_method(personal_notes_enabled, reify=True)
+    config.add_request_method(personal_meeting_notes, reify=True)

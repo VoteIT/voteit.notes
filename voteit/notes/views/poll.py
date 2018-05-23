@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from arche.views.base import BaseView
-from pyramid.decorator import reify
 from pyramid.view import view_config
 from voteit.core.models.interfaces import IPoll
 from voteit.core.security import ADD_VOTE
 
-from voteit.notes.interfaces import IMeetingNotes
 from voteit.notes.schemas import STATE_ICONS_CLS
 from voteit.notes.schemas import STATE_TXT_CLS
 
@@ -16,9 +14,9 @@ from voteit.notes.schemas import STATE_TXT_CLS
              renderer='voteit.notes:templates/personal_notes_for_poll.pt')
 class NotesForPollView(BaseView):
 
-    @reify
+    @property
     def notes(self):
-        return self.request.registry.getMultiAdapter((self.request.meeting, self.request), IMeetingNotes)
+        return self.request.personal_meeting_notes
 
     def __call__(self):
         results = []

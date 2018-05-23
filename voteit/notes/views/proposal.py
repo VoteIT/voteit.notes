@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from arche.views.base import BaseForm
 from betahaus.viewcomponent import view_action
-from pyramid.decorator import reify
 from pyramid.response import Response
 from pyramid.view import view_config
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import VIEW
 
 from voteit.notes import _
-from voteit.notes.interfaces import IMeetingNotes
 
 
 @view_action('metadata_listing', 'personal_notes',
@@ -18,19 +16,17 @@ from voteit.notes.interfaces import IMeetingNotes
 def personal_notes_btn(context, request, va, **kw):
     if not request.personal_notes_enabled:
         return
-    # mn = request.registry.queryMultiAdapter((request.meeting, request), IMeetingNotes)
-    # IMeetingNotes is user centric
-    # has_data = context.uid in mn
-    cls = 'btn btn-default btn-xs' # % (has_data and 'primary' or 'default',)
+    has_data = context.uid in request.personal_meeting_notes
     data = {'role': 'button',
-            'class': cls,
+            'class': 'btn btn-default btn-xs',
             'data-external-popover-loaded': 'false',
             'data-popover-for': context.uid,
             'data-placement': 'bottom',
             'title': request.localizer.translate(_("Your private notes")),
             'href': request.resource_url(context, 'edit_personal_notes'),}
-    return """<a %s>&nbsp;<span class="glyphicon glyphicon-pushpin text-primary"></span>&nbsp;</a> """ % \
-           " ".join('%s="%s"' % (k, v) for (k, v) in data.items())
+    return """<a %s>&nbsp;%s<span class="glyphicon glyphicon-pushpin text-primary"></span>&nbsp;</a> """ % \
+           (" ".join('%s="%s"' % (k, v) for (k, v) in data.items()),
+            has_data and '<span class="glyphicon glyphicon-asterisk text-primary">' or '')
 
 
 @view_config(context=IProposal, name='edit_personal_notes', renderer='arche:templates/form.pt')
@@ -43,9 +39,9 @@ class PersonalNotesForm(BaseForm):
     use_ajax = True
     update_structure_tpl = 'voteit.core:templates/snippets/js_update_structure.pt'
 
-    @reify
+    @property
     def notes(self):
-        return self.request.registry.getMultiAdapter((self.request.meeting, self.request), IMeetingNotes)
+        return self.request.personal_meeting_notes
 
     def appstruct(self):
         return dict(self.notes.get(self.context.uid, {}))

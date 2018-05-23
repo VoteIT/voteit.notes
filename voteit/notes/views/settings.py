@@ -34,10 +34,6 @@ def check_notes_enabled(context, request, va):
     return request.personal_notes_enabled
 
 
-def personal_notes_enabled(request):
-    return IMeetingNotesSettings(request.meeting, {}).get('active', False)
-
-
 def includeme(config):
     config.scan(__name__)
     config.add_view_action(
@@ -57,4 +53,3 @@ def includeme(config):
         'control_panel_personal_notes', 'settings',
         title=_("Settings"), view_name='proposal_notes_settings'
     )
-    config.add_request_method(personal_notes_enabled, reify=True)
