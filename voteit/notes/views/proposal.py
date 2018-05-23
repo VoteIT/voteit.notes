@@ -24,9 +24,9 @@ def personal_notes_btn(context, request, va, **kw):
             'data-placement': 'bottom',
             'title': request.localizer.translate(_("Your private notes")),
             'href': request.resource_url(context, 'edit_personal_notes'),}
-    return """<a %s>&nbsp;%s<span class="glyphicon glyphicon-pushpin text-primary"></span>&nbsp;</a> """ % \
+    return """<a %s>&nbsp;%s<span class="glyphicon glyphicon-pushpin text-primary"/>&nbsp;</a> """ % \
            (" ".join('%s="%s"' % (k, v) for (k, v) in data.items()),
-            has_data and '<span class="glyphicon glyphicon-asterisk text-primary">' or '')
+            has_data and '<span class="glyphicon glyphicon-asterisk text-primary"/>' or '')
 
 
 @view_config(context=IProposal, name='edit_personal_notes', renderer='arche:templates/form.pt')
@@ -46,20 +46,22 @@ class PersonalNotesForm(BaseForm):
     def appstruct(self):
         return dict(self.notes.get(self.context.uid, {}))
 
-    def _response(self, destroy=True):
+    def _response(self, destroy=True, reload=False):
         kwargs = {}
         selector = '[data-popover-for="%s"]' % self.context.uid
         if destroy:
             kwargs['destroy_popover'] = selector
         else:
             kwargs['hide_popover'] = selector
+        if reload:
+            kwargs['load_target'] = "[data-proposals-area]"
         return Response(
             self.render_template(self.update_structure_tpl, **kwargs)
         )
 
     def save_success(self, appstruct):
         self.notes[self.context.uid] = appstruct
-        return self._response()
+        return self._response(reload=True)
 
     def cancel(self, *args):
         return self._response()
