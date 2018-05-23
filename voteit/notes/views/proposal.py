@@ -27,7 +27,7 @@ def personal_notes_btn(context, request, va, **kw):
             'data-external-popover-loaded': 'false',
             'data-popover-for': context.uid,
             'data-placement': 'bottom',
-            'title': _("Your private notes"),
+            'title': request.localizer.translate(_("Your private notes")),
             'href': request.resource_url(context, 'edit_personal_notes'),}
     return """<a %s>&nbsp;<span class="glyphicon glyphicon-pushpin text-primary"></span>&nbsp;</a> """ % \
            " ".join('%s="%s"' % (k, v) for (k, v) in data.items())
