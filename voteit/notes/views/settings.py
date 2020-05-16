@@ -27,6 +27,7 @@ class NotesSettingsForm(BaseForm):
 
     def save_success(self, appstruct):
         self.settings.update(appstruct)
+        self.flash_messages.add(self.default_success, type="success")
         return HTTPFound(location=self.request.resource_url(self.context))
 
 
