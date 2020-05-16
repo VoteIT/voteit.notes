@@ -101,7 +101,7 @@ def personal_meeting_notes(request):
 
 
 def includeme(config):
-    config.registry.registerAdapter(MeetingNotes)
-    config.registry.registerAdapter(MeetingNotesSettings)
+    config.registry.registerAdapter(MeetingNotes, provided=IMeetingNotes)
+    config.registry.registerAdapter(MeetingNotesSettings, provided=IMeetingNotesSettings)
     config.add_request_method(personal_notes_enabled, reify=True)
     config.add_request_method(personal_meeting_notes, reify=True)
